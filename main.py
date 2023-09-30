@@ -6,6 +6,7 @@ class SNAKE:
     def __init__(self):
         self.body = [Vector2(5, 10), Vector2(6, 10), Vector2(7, 10)]
         self.direction = Vector2(1,0)
+        self.new_block = False
 
     def draw_snake(self):
         for block in self.body:
@@ -17,9 +18,20 @@ class SNAKE:
             pygame.draw.rect(screen, pygame.Color('Magenta'), block_rect)
 
     def move_snake(self):
-        body_copy = self.body[:-1]
-        body_copy.insert(0, body_copy[0] + self.direction)
-        self.body = body_copy[:]
+        # extend snake when fruit is hit - otherwise keep going
+        if self.new_block == True:
+            body_copy = self.body[:]
+            body_copy.insert(0, body_copy[0] + self.direction)
+            self.body = body_copy[:]
+            self.new_block = False
+        else:
+            body_copy = self.body[:-1]
+            body_copy.insert(0, body_copy[0] + self.direction)
+            self.body = body_copy[:]
+    
+    def add_block(self):
+        self.new_block = True
+
 
 class FRUIT:
     def __init__(self):
@@ -62,6 +74,7 @@ class MAIN:
             # reposition fruit
             self.fruit.randomize()
             # add another block to snake
+            self.snake.add_block()
 
 
 # initialize pygame
