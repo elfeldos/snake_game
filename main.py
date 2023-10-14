@@ -92,6 +92,9 @@ class SNAKE:
     def add_block(self):
         self.new_block = True
 
+    def reset(self):
+        self.body = [Vector2(5, 10), Vector2(4, 10), Vector2(3, 10)]
+        self.direction = Vector2(1,0)
 
 class FRUIT:
     def __init__(self):
@@ -141,6 +144,10 @@ class MAIN:
             self.fruit.randomize()
             # add another block to snake
             self.snake.add_block()
+        
+        for block in self.snake.body[1:]:
+            if block == self.fruit.pos:
+                self.fruit.randomize()
 
     def check_fail(self):
         # check if snake hits walls
@@ -157,8 +164,7 @@ class MAIN:
                 
     
     def game_over(self):
-        pygame.quit()
-        sys.exit()
+        self.snake.reset()
     
     def draw_grass(self):
         grass_color = (167,209,61)
